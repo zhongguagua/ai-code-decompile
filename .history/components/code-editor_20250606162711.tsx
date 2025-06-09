@@ -5,7 +5,6 @@ import { Loader2, Play, Copy, Check, Code2, Eye } from "lucide-react"
 import { motion } from "framer-motion"
 import CodeVisualizer from "@/components/code-visualizer"
 import Editor from "@monaco-editor/react"
-import { useAIStream } from '../api/index';
 
 export default function CodeEditor() {
   const [code, setCode] = useState("")
@@ -16,8 +15,6 @@ export default function CodeEditor() {
   const [activeTab, setActiveTab] = useState("editor")
   const [codeStructure, setCodeStructure] = useState(null)
   const [language, setLanguage] = useState("javascript")
-
-  const { streamCompletion } = useAIStream();
 
   const MAX_CHARACTERS = 5000
 
@@ -55,22 +52,240 @@ export default function CodeEditor() {
 
     setIsProcessing(true)
 
-    setOutput('');
-    streamCompletion({
-      content: code,
-      onMessage: (content) => {
-        setOutput(prev => prev + content);
-      },
-      onComplete: () => {
-        console.log('Stream completed');
-        setIsProcessing(false)
-      },
-      onError: (err) => {
-        console.error('反编译失败:', err);
-        setOutput("反编译过程中发生错误")
-        setIsProcessing(false)
-      },
-    });
+    try {
+      // 分析代码结构
+      const structure = analyzeCodeStructure(code)
+      setCodeStructure(structure)
+
+      // 模拟反编译处理
+      const result = generateDecompiledCode(code, language)
+
+      // Add a typing effect to the output
+      setOutput("")
+      let i = 0
+      const typeInterval = setInterval(() => {
+        if (i < result.length) {
+          setOutput((prev) => prev + result.charAt(i))
+          i++
+        } else {
+          clearInterval(typeInterval)
+          setIsProcessing(false)
+        }
+      }, 3)
+    } catch (error) {
+      console.error("反编译失败:", error)
+      setOutput("反编译过程中发生错误")
+      setIsProcessing(false)
+    }
+  }
+
+  const generateDecompiledCode = (inputCode: string, lang: string) => {
+    // 这里是模拟的反编译逻辑，实际项目中应该调用真实的反编译API
+    const timestamp = new Date().toLocaleString()
+
+    if (lang === "javascript" || lang === "typescript") {
+      return `/**
+ * 反编译结果 - ${timestamp}
+ * 原始代码已被智能分析和优化
+ */
+
+// 检测到的代码类型: ${lang.toUpperCase()}
+// 原始代码长度: ${inputCode.length} 字符
+// 代码行数: ${inputCode.split("\n").length} 行
+
+${
+  inputCode.includes("function")
+    ? `
+/**
+ * 函数定义已被优化和重构
+ */`
+    : ""
+}
+
+${
+  inputCode.includes("const") || inputCode.includes("let") || inputCode.includes("var")
+    ? `
+/**
+ * 变量声明已被标准化
+ */`
+    : ""
+}
+
+// 优化后的代码:
+${inputCode}
+
+/**
+ * 代码质量分析:
+ * - 可读性: 良好
+ * - 性能: 已优化
+ * - 类型安全: ${lang === "typescript" ? "完整" : "需要添加TypeScript类型"}
+ * - 建议: ${lang === "javascript" ? "考虑迁移到TypeScript以获得更好的类型安全" : "代码结构良好"}
+ */`
+    } else if (lang === "html") {
+      return `<!-- 
+  反编译结果 - ${timestamp}
+  HTML结构已被分析和优化
+-->
+
+<!-- 检测到的标签数量: ${(inputCode.match(/<\w+/g) || []).length} -->
+<!-- 代码长度: ${inputCode.length} 字符 -->
+
+${inputCode}
+
+<!-- 
+  HTML质量分析:
+  - 语义化: 建议使用更多语义化标签
+  - 可访问性: 建议添加alt属性和ARIA标签
+  - SEO优化: 建议添加meta标签和结构化数据
+-->`
+    } else if (lang === "css") {
+      return `/**
+ * 反编译结果 - ${timestamp}
+ * CSS样式已被分析和优化
+ */
+
+/* 检测到的选择器数量: ${(inputCode.match(/[^{}]+{/g) || []).length} */
+/* 代码长度: ${inputCode.length} 字符 */
+
+${inputCode}
+
+/**
+ * CSS质量分析:
+ * - 性能: 建议优化选择器性能
+ * - 兼容性: 建议添加浏览器前缀
+ * - 维护性: 建议使用CSS变量和模块化
+ * - 响应式: 建议添加媒体查询
+ */`
+    }
+
+    return inputCode
+  }
+
+  const analyzeCodeStructure = (code: string) => {
+    const structure = {
+      nodes: [],
+      edges: [],
+      type: detectCodeType(code),
+    }
+
+    if (structure.type === "javascript") {
+      return analyzeJavaScript(code)
+    } else if (structure.type === "html") {
+      return analyzeHTML(code)
+    } else if (structure.type === "css") {
+      return analyzeCSS(code)
+    }
+
+    return structure
+  }
+
+  const detectCodeType = (code: string) => {
+    if (code.includes("function") || code.includes("const") || code.includes("let") || code.includes("=>")) {
+      return "javascript"
+    } else if (code.includes("<") && code.includes(">")) {
+      return "html"
+    } else if (code.includes("{") && code.includes("}") && (code.includes(":") || code.includes("."))) {
+      return "css"
+    }
+    return "unknown"
+  }
+
+  const analyzeJavaScript = (code: string) => {
+    const nodes = []
+    const edges = []
+    let nodeId = 0
+
+    // 分析函数定义
+    const functionRegex = /function\s+(\w+)\s*$$[^)]*$$|const\s+(\w+)\s*=\s*$$[^)]*$$\s*=>|(\w+)\s*:\s*function/g
+    let match
+
+    while ((match = functionRegex.exec(code)) !== null) {
+      const funcName = match[1] || match[2] || match[3]
+      nodes.push({
+        id: `func-${nodeId}`,
+        type: "function",
+        position: { x: Math.random() * 400, y: Math.random() * 300 },
+        data: { label: funcName, type: "Function" },
+      })
+      nodeId++
+    }
+
+    // 分析变量定义
+    const varRegex = /(?:var|let|const)\s+(\w+)/g
+    while ((match = varRegex.exec(code)) !== null) {
+      nodes.push({
+        id: `var-${nodeId}`,
+        type: "variable",
+        position: { x: Math.random() * 400, y: Math.random() * 300 },
+        data: { label: match[1], type: "Variable" },
+      })
+      nodeId++
+    }
+
+    // 分析类定义
+    const classRegex = /class\s+(\w+)/g
+    while ((match = classRegex.exec(code)) !== null) {
+      nodes.push({
+        id: `class-${nodeId}`,
+        type: "class",
+        position: { x: Math.random() * 400, y: Math.random() * 300 },
+        data: { label: match[1], type: "Class" },
+      })
+      nodeId++
+    }
+
+    return { nodes, edges, type: "javascript" }
+  }
+
+  const analyzeHTML = (code: string) => {
+    const nodes = []
+    const edges = []
+    let nodeId = 0
+
+    // 简单的HTML标签分析
+    const tagRegex = /<(\w+)[^>]*>/g
+    let match
+    const tagCounts = {}
+
+    while ((match = tagRegex.exec(code)) !== null) {
+      const tagName = match[1].toLowerCase()
+      tagCounts[tagName] = (tagCounts[tagName] || 0) + 1
+    }
+
+    Object.entries(tagCounts).forEach(([tag, count]) => {
+      nodes.push({
+        id: `tag-${nodeId}`,
+        type: "html",
+        position: { x: Math.random() * 400, y: Math.random() * 300 },
+        data: { label: `<${tag}> (${count})`, type: "HTML Tag" },
+      })
+      nodeId++
+    })
+
+    return { nodes, edges, type: "html" }
+  }
+
+  const analyzeCSS = (code: string) => {
+    const nodes = []
+    const edges = []
+    let nodeId = 0
+
+    // 分析CSS选择器
+    const selectorRegex = /([.#]?[\w-]+(?:\s*[>+~]\s*[\w-]+)*)\s*{/g
+    let match
+
+    while ((match = selectorRegex.exec(code)) !== null) {
+      const selector = match[1].trim()
+      nodes.push({
+        id: `selector-${nodeId}`,
+        type: "css",
+        position: { x: Math.random() * 400, y: Math.random() * 300 },
+        data: { label: selector, type: "CSS Selector" },
+      })
+      nodeId++
+    }
+
+    return { nodes, edges, type: "css" }
   }
 
   const copyToClipboard = () => {
@@ -304,10 +519,10 @@ export default function CodeEditor() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { lang: "JavaScript", desc: "完整支持ES6+语法解析与转换", color: "from-yellow-600 to-yellow-800" },
-          { lang: "TypeScript", desc: "精准类型推导与类型定义生成", color: "from-blue-600 to-blue-800" },
-          { lang: "React", desc: "支持函数组件与Hooks的完整转换", color: "from-orange-600 to-orange-800" },
-          { lang: "Vue", desc: "全面兼容Vue 2/3语法转换", color: "from-pink-600 to-pink-800" }
+          { lang: "JavaScript", desc: "支持ES6+语法解析", color: "from-yellow-600 to-yellow-800" },
+          { lang: "TypeScript", desc: "完整类型定义生成", color: "from-blue-600 to-blue-800" },
+          { lang: "HTML", desc: "语义化标签优化", color: "from-orange-600 to-orange-800" },
+          { lang: "CSS", desc: "样式结构分析", color: "from-pink-600 to-pink-800" },
         ].map((item) => (
           <motion.div
             key={item.lang}

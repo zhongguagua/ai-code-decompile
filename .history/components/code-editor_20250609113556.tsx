@@ -17,7 +17,7 @@ export default function CodeEditor() {
   const [codeStructure, setCodeStructure] = useState(null)
   const [language, setLanguage] = useState("javascript")
 
-  const { streamCompletion } = useAIStream();
+  const { streamCompletion, isLoading, error, abort } = useAIStream();
 
   const MAX_CHARACTERS = 5000
 
@@ -55,22 +55,28 @@ export default function CodeEditor() {
 
     setIsProcessing(true)
 
-    setOutput('');
-    streamCompletion({
-      content: code,
-      onMessage: (content) => {
-        setOutput(prev => prev + content);
-      },
-      onComplete: () => {
-        console.log('Stream completed');
-        setIsProcessing(false)
-      },
-      onError: (err) => {
-        console.error('反编译失败:', err);
-        setOutput("反编译过程中发生错误")
-        setIsProcessing(false)
-      },
-    });
+    try {
+      setOutput('');
+      streamCompletion({
+        content: code,
+        onMessage: (content) => {
+          setOutput(prev => prev + content);
+        },
+        onComplete: () => {
+          console.log('Stream completed');
+          setIsProcessing(false)
+        },
+        onError: (err) => {
+          console.error('反编译失败:', err);
+          setOutput("反编译过程中发生错误")
+          setIsProcessing(false)
+        },
+      });
+    } catch (error) {
+      console.error("反编译失败:", error)
+      setOutput("反编译过程中发生错误")
+      setIsProcessing(false)
+    }
   }
 
   const copyToClipboard = () => {
@@ -304,10 +310,10 @@ export default function CodeEditor() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { lang: "JavaScript", desc: "完整支持ES6+语法解析与转换", color: "from-yellow-600 to-yellow-800" },
-          { lang: "TypeScript", desc: "精准类型推导与类型定义生成", color: "from-blue-600 to-blue-800" },
-          { lang: "React", desc: "支持函数组件与Hooks的完整转换", color: "from-orange-600 to-orange-800" },
-          { lang: "Vue", desc: "全面兼容Vue 2/3语法转换", color: "from-pink-600 to-pink-800" }
+          { lang: "JavaScript", desc: "支持ES6+语法解析", color: "from-yellow-600 to-yellow-800" },
+          { lang: "TypeScript", desc: "完整类型定义生成", color: "from-blue-600 to-blue-800" },
+          { lang: "HTML", desc: "语义化标签优化", color: "from-orange-600 to-orange-800" },
+          { lang: "CSS", desc: "样式结构分析", color: "from-pink-600 to-pink-800" },
         ].map((item) => (
           <motion.div
             key={item.lang}

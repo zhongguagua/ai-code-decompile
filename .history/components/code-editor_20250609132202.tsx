@@ -304,10 +304,10 @@ export default function CodeEditor() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { lang: "JavaScript", desc: "完整支持ES6+语法解析与转换", color: "from-yellow-600 to-yellow-800" },
-          { lang: "TypeScript", desc: "精准类型推导与类型定义生成", color: "from-blue-600 to-blue-800" },
-          { lang: "React", desc: "支持函数组件与Hooks的完整转换", color: "from-orange-600 to-orange-800" },
-          { lang: "Vue", desc: "全面兼容Vue 2/3语法转换", color: "from-pink-600 to-pink-800" }
+          { lang: "JavaScript", desc: "支持ES6+语法解析", color: "from-yellow-600 to-yellow-800" },
+          { lang: "TypeScript", desc: "完整类型定义生成", color: "from-blue-600 to-blue-800" },
+          { lang: "React", desc: "函数式编程和Hook类型转换", color: "from-orange-600 to-orange-800" },
+          { lang: "Vue", desc: "支持Vue2/3级别转换", color: "from-pink-600 to-pink-800" },
         ].map((item) => (
           <motion.div
             key={item.lang}
