@@ -4,6 +4,14 @@ import { motion } from "framer-motion"
 import { ArrowRight, Zap, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
+const userMap = [
+  'https://avatars.githubusercontent.com/u/50286783?v=4',
+  'https://avatars.githubusercontent.com/u/2120155?s=64&v=4',
+  'https://avatars.githubusercontent.com/u/25892025?u=eb198d464586e68abd5e6778ee581a475bbc5259&v=4&size=64',
+  'https://avatars.githubusercontent.com/u/23046078?v=4',
+  'https://avatars.githubusercontent.com/u/32786500?s=48&v=4'
+]
+
 export default function HeroSection() {
   const scrollToEditor = () => {
     const editorElement = document.querySelector("#code-editor")
@@ -39,7 +47,7 @@ export default function HeroSection() {
           </h1>
 
           <p className="text-lg text-zinc-300 max-w-xl">
-            通过先进的AI技术，我们能够智能分析压缩混淆后的JavaScript代码，不仅完美还原原始结构，还能生成完整的TypeScript类型定义，让代码更清晰、更易读。
+            通过多智能体协作的AI解码引擎，我们能够智能分析压缩混淆后的JavaScript代码，不仅完美还原原始结构，还能生成完整的TypeScript类型定义，让代码更清晰、更易读。
           </p>
 
           <div className="flex flex-wrap gap-4">
@@ -61,12 +69,12 @@ export default function HeroSection() {
 
           <div className="pt-4 flex items-center gap-6">
             <div className="flex -space-x-2">
-              {[...Array(4)].map((_, i) => (
+              {userMap.map((_, i) => (
                 <div
                   key={i}
                   className="w-8 h-8 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-900 border border-zinc-600 flex items-center justify-center text-xs font-medium"
                 >
-                  {String.fromCharCode(65 + i)}
+                  <img className="w-full h-full rounded-full" src={_} alt={_} />
                 </div>
               ))}
             </div>
@@ -95,7 +103,8 @@ export default function HeroSection() {
             <div className="grid grid-cols-2 divide-x divide-zinc-700/50">
               <div className="p-4 font-mono text-xs text-zinc-400 overflow-hidden">
                 <div className="text-zinc-500">// 混淆后的代码</div>
-                <pre className="mt-2">
+                {/* break-words whitespace-break-spaces */}
+                <pre className="h-[110px] overflow-hidden mt-2">
                   {`function a(b,c){return d(b-371,c)}function d(a,b){var c=e();return d=function(f,g){f=f-125;var h=c[f];return h},d(a,b)}var e=function(){var f=["shift","1780730MHUkXj","2911410RJxLsf","push","1642FxhJRJ","4uQbILO","length","2114965nzBvJF","8723208ibdPnP","splice","slice","7198824QUFSxS","9qXSdRG","1337643UWRnXL","unshift","3132900AcxLsm"];return e=function(){return f},e()}(function(b,c){var f=a,g=b();while(!![]){try{var h=-parseInt(f(384))/1+parseInt(f(382))/2*(parseInt(f(376))/3)+parseInt(f(383))/4+-parseInt(f(377))/5+parseInt(f(380))/6+parseInt(f(379))/7*(-parseInt(f(378))/8)+parseInt(f(381))/9;if(h===c)break;else g[f(385)](g[f(382)]())}catch(i){g[f(385)](g[f(382)]())}}}(e,983952));`}
                 </pre>
               </div>

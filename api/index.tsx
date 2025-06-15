@@ -7,6 +7,25 @@ interface StreamCompletionOptions {
   onComplete?: () => void;
 }
 
+const aiCompletionsStream = (content: any, controllerRef: any) => {
+  const responsePromise = fetch('/api/ai/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ content }),
+    signal: controllerRef.current.signal,
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.body; // 返回 ReadableStream
+  });
+
+  return responsePromise; // 返回 promise，以便后续处理流式数据
+}
+
+
 export const useAIStream = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -24,28 +43,22 @@ export const useAIStream = () => {
     try {
       // 创建 AbortController 以便可以取消请求
       controllerRef.current = new AbortController();
-      
-      const response = await fetch('/api/ai/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ content }),
-        signal: controllerRef.current.signal,
-      });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      const body = await aiCompletionsStream(content, controllerRef);
 
-      if (!response.body) {
-        throw new Error('ReadableStream not supported in this browser.');
-      }
 
-      console.log(response, 'response')
+      // if (!response.ok) {
+      //   throw new Error(`HTTP error! status: ${response.status}`);
+      // }
+
+      // if (!response.body) {
+      //   throw new Error('ReadableStream not supported in this browser.');
+      // }
+
+      // console.log(response, 'response')
 
       // 创建 SSE 解析器
-      const reader = response.body.getReader();
+      const reader = (body as any).getReader();
       const decoder = new TextDecoder();
       let buffer = '';
 
