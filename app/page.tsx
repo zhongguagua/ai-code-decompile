@@ -43,9 +43,12 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="relative z-10 border-t border-zinc-800 py-4 px-6 text-center text-sm text-zinc-500">
+      <footer className="relative z-10 border-t border-zinc-800 py-4 px-6 text-center text-sm text-zinc-500 pb-12">
         <div className="container mx-auto">
-          <p>© {new Date().getFullYear()} 高级前端代码反编译工具 | 探索代码的奥秘</p>
+          <div className="mt-2 text-xs text-zinc-400 mb-2">
+            <p>免责声明：本工具仅限合法学习研究，禁止用于商业代码反编译，使用者须确保代码合法性并承担全部责任</p>
+          </div>
+          <p>© {new Date().getFullYear()} 高级前端代码反编译工具 | 从机器语言到人类智慧</p>
         </div>
       </footer>
     </main>

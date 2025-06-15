@@ -15,7 +15,6 @@ export default function CodeEditor() {
   const [output, setOutput] = useState("")
   const [isProcessing, setIsProcessing] = useState(false)
   const [copied, setCopied] = useState(false)
-  const [lineCount, setLineCount] = useState(1)
   const [activeTab, setActiveTab] = useState("editor")
   const [codeStructure, setCodeStructure] = useState(null)
   const [language, setLanguage] = useState("javascript")
@@ -26,12 +25,6 @@ export default function CodeEditor() {
   const { streamCompletion } = useAIStream()
 
   const MAX_CHARACTERS = 5000
-
-  useEffect(() => {
-    // Count lines for line numbers
-    const lines = code.split("\n").length
-    setLineCount(lines)
-  }, [code])
 
   const handleCodeChange = (value: string | undefined) => {
     const newCode = value || ""
@@ -57,6 +50,7 @@ export default function CodeEditor() {
   }
 
   const handleDecompile = async () => {
+    console.log(handleDecompile, 'handleDecompile')
     if (!code.trim()) return
 
     setIsProcessing(true)
@@ -275,7 +269,6 @@ export default function CodeEditor() {
                   )}
                 </div>
                 <div className="flex items-center gap-4 text-xs">
-                  <span className="text-zinc-500">{lineCount} 行</span>
                   <span className={`${code.length > MAX_CHARACTERS * 0.9 ? "text-yellow-400" : "text-zinc-500"}`}>
                     {code.length}/{MAX_CHARACTERS} 字符
                   </span>

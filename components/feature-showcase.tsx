@@ -38,7 +38,7 @@ export default function FeatureShowcase() {
     {
       icon: <Lock className="h-6 w-6" />,
       title: "安全可靠",
-      description: "所有代码分析在本地进行，不会上传到服务器，保障您的代码安全",
+      description: "所有代码分析均通过加密传输与处理，严格隔离用户数据，保障您的核心资产隐私",
       color: "from-red-600 to-red-800",
     },
   ]
