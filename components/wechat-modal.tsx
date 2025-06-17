@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { MessageCircle, Users, QrCode, Star, Gift } from "lucide-react"
 import { motion } from "framer-motion"
+import Image from 'next/image';
+
 
 export default function WeChatModal() {
   const [activeTab, setActiveTab] = useState("group")
@@ -43,7 +45,7 @@ export default function WeChatModal() {
               <Users className="h-4 w-4" />
               微信群
             </button>
-            <button
+            {/* <button
               onClick={() => setActiveTab("official")}
               className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-md text-sm font-medium transition-all ${
                 activeTab === "official"
@@ -53,7 +55,7 @@ export default function WeChatModal() {
             >
               <Star className="h-4 w-4" />
               公众号
-            </button>
+            </button> */}
           </div>
 
           {/* Content */}
@@ -75,9 +77,9 @@ export default function WeChatModal() {
                   <div className="bg-zinc-800/50 rounded-lg p-4 space-y-3">
                     <div className="w-48 h-48 mx-auto bg-white rounded-lg flex items-center justify-center">
                       <div className="text-center text-zinc-600">
-                        <QrCode className="h-16 w-16 mx-auto mb-2" />
+                        <Image src="/weixin.jpg" className="h-16 w-16 mx-auto mb-2" alt="weixin"></Image>
                         <p className="text-sm">微信群二维码</p>
-                        <p className="text-xs mt-1">扫码加入技术群</p>
+                        <p className="text-xs mt-1">扫码加我邀请你加入技术学习交流群</p>
                       </div>
                     </div>
 
@@ -87,11 +89,11 @@ export default function WeChatModal() {
                         <span>群内福利</span>
                       </div>
                       <ul className="text-zinc-300 space-y-1 text-left">
-                        <li>• 🚀 最新前端技术分享</li>
-                        <li>• 💡 代码问题实时解答</li>
+                        <li>• 🚀 反编译技术分享</li>
+                        <li>• 💡 认识JavaScript大佬</li>
                         <li>• 📚 独家学习资源</li>
-                        <li>• 🎯 内推机会分享</li>
-                        <li>• 🔥 项目实战经验</li>
+                        <li>• 🎯 成为内测种子用户</li>
+                        <li>• 🔥 上报并优先解决bug</li>
                       </ul>
                     </div>
                   </div>
@@ -99,7 +101,7 @@ export default function WeChatModal() {
               </>
             )}
 
-            {activeTab === "official" && (
+            {/* {activeTab === "official" && (
               <>
                 <div className="space-y-3">
                   <div className="flex items-center justify-center gap-2 text-blue-400">
@@ -132,11 +134,11 @@ export default function WeChatModal() {
                   </div>
                 </div>
               </>
-            )}
+            )} */}
           </motion.div>
 
           {/* Call to Action */}
-          <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-lg p-4 border border-purple-500/30">
+          {/* <div className="bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-lg p-4 border border-purple-500/30">
             <div className="text-center space-y-2">
               <h4 className="font-semibold text-purple-300">🎉 新用户专享</h4>
               <p className="text-sm text-zinc-300">
@@ -148,12 +150,12 @@ export default function WeChatModal() {
                 <span>• 面试题库</span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Footer */}
           <div className="text-center text-xs text-zinc-500 space-y-1">
             <p>
-              👥 已有 <span className="text-green-400 font-semibold">2000+</span> 开发者加入
+              👥 已有 <span className="text-green-400 font-semibold">200+</span> 开发者加入
             </p>
             <p>🔥 每日活跃讨论，技术氛围浓厚</p>
           </div>
