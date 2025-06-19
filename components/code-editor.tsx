@@ -1,14 +1,15 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Loader2, Play, Copy, Check, Code2, Eye, Brain, Sparkles, ChevronDown, Network } from "lucide-react"
 import { motion } from "framer-motion"
 import CodeVisualizer from "@/components/code-visualizer"
 import Editor from "@monaco-editor/react"
 import { useAIStream } from "../api/index"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { DEMO_CODES } from "../lib/code";
+import { useToast } from "@/hooks/use-toast"
+import { DEMO_CODES } from "../lib/code"
 
 export default function CodeEditor() {
   const [code, setCode] = useState("")
@@ -23,6 +24,7 @@ export default function CodeEditor() {
   const [isRunningDemo, setIsRunningDemo] = useState(false)
 
   const { streamCompletion } = useAIStream()
+  const { toast } = useToast()
 
   const MAX_CHARACTERS = 5000
 
@@ -65,6 +67,12 @@ export default function CodeEditor() {
           setShowThinkingDialog(false)
           // 自动切换到输出标签页
           setActiveTab("output")
+          // 显示成功开始处理的提示
+          toast({
+            title: "🚀 反编译开始",
+            description: "AI 正在分析您的代码，请稍候...",
+            duration: 3000,
+          })
         }
         setHasReceivedFirstOutput(true)
         setOutput((prev) => prev + content)
@@ -74,14 +82,28 @@ export default function CodeEditor() {
         setIsProcessing(false)
         setShowThinkingDialog(false)
         setIsRunningDemo(false)
+        // 显示完成提示
+        toast({
+          title: "✅ 反编译完成",
+          description: "代码分析已完成，您可以查看结果并复制使用。",
+          duration: 4000,
+        })
       },
       onError: (err) => {
         console.error("反编译失败:", err)
-        
-        setOutput("反编译过程中发生错误")
+
+        setOutput("反编译过程中发生错误，请稍后重试")
         setIsProcessing(false)
         setShowThinkingDialog(false)
         setIsRunningDemo(false)
+
+        // 显示错误提示
+        toast({
+          variant: "destructive",
+          title: "❌ 反编译失败",
+          description: "处理过程中遇到问题，请检查代码格式或稍后重试。如果问题持续存在，请联系技术支持。",
+          duration: 6000,
+        })
       },
     })
   }
@@ -95,7 +117,14 @@ export default function CodeEditor() {
     setTimeout(() => {
       setActiveTab("output")
       setShowThinkingDialog(false)
-      let demo = (DEMO_CODES as any)[demoKey]
+      const demo = (DEMO_CODES as any)[demoKey]
+
+      // 显示演示开始提示
+      toast({
+        title: "🎯 演示开始",
+        description: `正在展示 ${demo.title} 的反编译效果...`,
+        duration: 3000,
+      })
 
       let i = 0
       const typeInterval = setInterval(() => {
@@ -106,6 +135,12 @@ export default function CodeEditor() {
           clearInterval(typeInterval)
           setIsProcessing(false)
           setIsRunningDemo(false)
+          // 显示演示完成提示
+          toast({
+            title: "🎉 演示完成",
+            description: "您可以尝试输入自己的代码进行反编译！",
+            duration: 4000,
+          })
         }
       }, 10) // 调整打字速度
     }, 2000)
@@ -120,6 +155,13 @@ export default function CodeEditor() {
     // 先清空输出
     setOutput("")
     setActiveTab("editor")
+
+    // 显示演示准备提示
+    toast({
+      title: "🚀 准备演示",
+      description: `正在加载 ${demo.title} 示例代码...`,
+      duration: 2000,
+    })
 
     // 模拟打字效果填入代码
     setCode("")
@@ -144,6 +186,13 @@ export default function CodeEditor() {
     navigator.clipboard.writeText(output)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+
+    // 显示复制成功提示
+    toast({
+      title: "📋 复制成功",
+      description: "反编译结果已复制到剪贴板！",
+      duration: 2000,
+    })
   }
 
   const editorOptions = {
