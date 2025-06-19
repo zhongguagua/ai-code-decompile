@@ -77,6 +77,7 @@ export default function CodeEditor() {
       },
       onError: (err) => {
         console.error("反编译失败:", err)
+        
         setOutput("反编译过程中发生错误")
         setIsProcessing(false)
         setShowThinkingDialog(false)
@@ -85,8 +86,33 @@ export default function CodeEditor() {
     })
   }
 
+  const fakeHandleDecompile = (demoKey: string) => {
+    setIsProcessing(true)
+    setShowThinkingDialog(true)
+    setHasReceivedFirstOutput(false)
+    setOutput("")
+
+    setTimeout(() => {
+      setActiveTab("output")
+      setShowThinkingDialog(false)
+      let demo = (DEMO_CODES as any)[demoKey]
+
+      let i = 0
+      const typeInterval = setInterval(() => {
+        if (i < demo.code2.length) {
+          setOutput(demo.code2.slice(0, i + 1))
+          i++
+        } else {
+          clearInterval(typeInterval)
+          setIsProcessing(false)
+          setIsRunningDemo(false)
+        }
+      }, 10) // 调整打字速度
+    }, 2000)
+  }
+
   const handleDemoClick = async (demoKey: string) => {
-    const demo = DEMO_CODES[demoKey]
+    const demo = (DEMO_CODES as any)[demoKey]
     if (!demo) return
 
     setIsRunningDemo(true)
@@ -108,8 +134,8 @@ export default function CodeEditor() {
         clearInterval(typeInterval)
         // 代码填入完成后，等待1秒再自动执行反编译
         setTimeout(() => {
-          handleDecompile()
-        }, 1000)
+          fakeHandleDecompile(demoKey)
+        }, 300)
       }
     }, 10) // 调整打字速度
   }
@@ -447,7 +473,7 @@ export default function CodeEditor() {
                   </div>
                 </div>
                 <p className="text-sm text-zinc-400">正在分析您的代码结构和语法特征...</p>
-                <p className="text-xs text-zinc-500">这可能需要几秒钟时间，请耐心等待</p>
+                <p className="text-xs text-zinc-500">这可能需要1-2分钟时间，请耐心等待</p>
               </div>
             </div>
           </DialogHeader>

@@ -75,13 +75,14 @@ export default function WeChatModal() {
                   </div>
 
                   <div className="bg-zinc-800/50 rounded-lg p-4 space-y-3">
-                    <div className="w-48 h-48 mx-auto bg-white rounded-lg flex items-center justify-center">
+                    <div className="w-48 h-48 mx-auto bg-white overflow-hidden rounded-lg flex items-center justify-center">
                       <div className="text-center text-zinc-600">
-                        <Image src="/weixin.jpg" className="h-16 w-16 mx-auto mb-2" alt="weixin"></Image>
-                        <p className="text-sm">微信群二维码</p>
-                        <p className="text-xs mt-1">扫码加我邀请你加入技术学习交流群</p>
+                        <Image src="/weixin.jpg" width={200} height={300} className="h-[200px] w-full mx-auto mb-2" alt="weixin"></Image>
                       </div>
                     </div>
+
+                    <p className="text-sm">微信群二维码</p>
+                    <p className="text-xs mt-1">扫码加好友后备注AI编码 会邀请你加入技术学习交流群</p>
 
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2 text-green-400">

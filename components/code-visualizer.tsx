@@ -87,7 +87,7 @@ export default function CodeVisualizer({ structure }: CodeVisualizerProps) {
             </div>
           </motion.div>
           <h3 className="text-lg font-medium mb-2">代码结构可视化</h3>
-          <p className="text-sm text-zinc-500">输入代码并点击反编译按钮来查看代码结构图</p>
+          <p className="text-sm text-zinc-500">通过图表结构化的方式来梳理代码, 开发进行中...</p>
         </div>
       </div>
     )
