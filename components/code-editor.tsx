@@ -10,10 +10,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useToast } from "@/hooks/use-toast"
 import { DEMO_CODES } from "../lib/code"
+import { extractCodeBlocksStreaming } from "../lib/utils"
 
 export default function CodeEditor() {
   const [code, setCode] = useState("")
   const [output, setOutput] = useState("")
+  const [outputCode, setOutputCode] = useState("") // 输出代码
   const [isProcessing, setIsProcessing] = useState(false)
   const [copied, setCopied] = useState(false)
   const [activeTab, setActiveTab] = useState("editor")
@@ -58,6 +60,10 @@ export default function CodeEditor() {
     setShowThinkingDialog(true)
     setHasReceivedFirstOutput(false)
     setOutput("")
+    setOutputCode("")
+
+    // 使用局部变量来累积输出
+    let accumulatedOutput = ""
 
     streamCompletion({
       content: code,
@@ -67,32 +73,25 @@ export default function CodeEditor() {
           setShowThinkingDialog(false)
           // 自动切换到输出标签页
           setActiveTab("output")
-          // 显示成功开始处理的提示
-          toast({
-            title: "🚀 反编译开始",
-            description: "AI 正在分析您的代码，请稍候...",
-            duration: 3000,
-          })
         }
         setHasReceivedFirstOutput(true)
-        setOutput((prev) => prev + content)
+        // 更新局部变量
+        accumulatedOutput += content
+        setOutput(accumulatedOutput)
+
+        const codeBlocks = extractCodeBlocksStreaming(accumulatedOutput)
+        setOutputCode(codeBlocks[0] || "")
       },
       onComplete: () => {
         console.log("Stream completed")
         setIsProcessing(false)
         setShowThinkingDialog(false)
         setIsRunningDemo(false)
-        // 显示完成提示
-        toast({
-          title: "✅ 反编译完成",
-          description: "代码分析已完成，您可以查看结果并复制使用。",
-          duration: 4000,
-        })
       },
       onError: (err) => {
         console.error("反编译失败:", err)
 
-        setOutput("反编译过程中发生错误，请稍后重试")
+        setOutputCode("反编译过程中发生错误，请稍后重试")
         setIsProcessing(false)
         setShowThinkingDialog(false)
         setIsRunningDemo(false)
@@ -113,34 +112,22 @@ export default function CodeEditor() {
     setShowThinkingDialog(true)
     setHasReceivedFirstOutput(false)
     setOutput("")
+    setOutputCode("")
 
     setTimeout(() => {
       setActiveTab("output")
       setShowThinkingDialog(false)
       const demo = (DEMO_CODES as any)[demoKey]
 
-      // 显示演示开始提示
-      toast({
-        title: "🎯 演示开始",
-        description: `正在展示 ${demo.title} 的反编译效果...`,
-        duration: 3000,
-      })
-
       let i = 0
       const typeInterval = setInterval(() => {
         if (i < demo.code2.length) {
-          setOutput(demo.code2.slice(0, i + 1))
+          setOutputCode(demo.code2.slice(0, i + 1))
           i++
         } else {
           clearInterval(typeInterval)
           setIsProcessing(false)
           setIsRunningDemo(false)
-          // 显示演示完成提示
-          toast({
-            title: "🎉 演示完成",
-            description: "您可以尝试输入自己的代码进行反编译！",
-            duration: 4000,
-          })
         }
       }, 10) // 调整打字速度
     }, 2000)
@@ -155,13 +142,6 @@ export default function CodeEditor() {
     // 先清空输出
     setOutput("")
     setActiveTab("editor")
-
-    // 显示演示准备提示
-    toast({
-      title: "🚀 准备演示",
-      description: `正在加载 ${demo.title} 示例代码...`,
-      duration: 2000,
-    })
 
     // 模拟打字效果填入代码
     setCode("")
@@ -183,16 +163,9 @@ export default function CodeEditor() {
   }
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(output)
+    navigator.clipboard.writeText(outputCode)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
-
-    // 显示复制成功提示
-    toast({
-      title: "📋 复制成功",
-      description: "反编译结果已复制到剪贴板！",
-      duration: 2000,
-    })
   }
 
   const editorOptions = {
@@ -305,7 +278,7 @@ export default function CodeEditor() {
                 {isProcessing && !hasReceivedFirstOutput && (
                   <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
                 )}
-                {output && !isProcessing && <div className="w-2 h-2 bg-green-400 rounded-full"></div>}
+                {outputCode && !isProcessing && <div className="w-2 h-2 bg-green-400 rounded-full"></div>}
               </Button>
               <Button
                 variant={activeTab === "visualizer" ? "default" : "ghost"}
@@ -396,7 +369,7 @@ export default function CodeEditor() {
                 <div className="flex items-center gap-2">
                   <Eye className="h-4 w-4 text-blue-400" />
                   <span className="text-sm font-medium">反编译结果</span>
-                  {output && !isProcessing && (
+                  {outputCode && !isProcessing && (
                     <span className="px-2 py-1 text-xs rounded-full bg-emerald-600/20 text-emerald-300">已完成</span>
                   )}
                   {isProcessing && hasReceivedFirstOutput && (
@@ -407,7 +380,7 @@ export default function CodeEditor() {
                   variant="ghost"
                   size="sm"
                   onClick={copyToClipboard}
-                  disabled={!output}
+                  disabled={!outputCode}
                   className="h-8 text-xs gap-1 text-zinc-400 hover:text-white"
                 >
                   {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
@@ -420,7 +393,7 @@ export default function CodeEditor() {
 
                 <div className="absolute top-0 left-0 right-0 h-8 bg-zinc-800/50 flex items-center px-4 z-10">
                   <span className="text-xs text-zinc-500">输出结果</span>
-                  {output && !isProcessing && (
+                  {outputCode && !isProcessing && (
                     <div className="ml-auto flex items-center gap-2 text-xs text-emerald-400">
                       <Check className="h-3 w-3" />
                       <span>反编译完成</span>
@@ -435,11 +408,11 @@ export default function CodeEditor() {
                 </div>
 
                 <div className="h-full pt-8">
-                  {output ? (
+                  {outputCode ? (
                     <Editor
                       height="400px"
                       language={language}
-                      value={output}
+                      value={outputCode}
                       theme="vs-dark"
                       options={{
                         ...editorOptions,
@@ -503,7 +476,7 @@ export default function CodeEditor() {
 
       {/* AI 思考弹框 */}
       <Dialog open={showThinkingDialog} onOpenChange={setShowThinkingDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent showClose={false} closeOnOverlayClick={false} className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
               <div className="relative">

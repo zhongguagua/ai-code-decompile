@@ -46,17 +46,6 @@ export const useAIStream = () => {
 
       const body = await aiCompletionsStream(content, controllerRef);
 
-
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! status: ${response.status}`);
-      // }
-
-      // if (!response.body) {
-      //   throw new Error('ReadableStream not supported in this browser.');
-      // }
-
-      // console.log(response, 'response')
-
       // 创建 SSE 解析器
       const reader = (body as any).getReader();
       const decoder = new TextDecoder();
@@ -65,8 +54,6 @@ export const useAIStream = () => {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-
-        console.log(value, 'value')
 
         buffer += decoder.decode(value, { stream: true });
 
