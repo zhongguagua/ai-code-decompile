@@ -5,6 +5,7 @@ import WeChatModal from "@/components/wechat-modal"
 import HeroSection from "@/components/hero-section"
 import FeatureShowcase from "@/components/feature-showcase"
 import DemoSection from "@/components/demo-section"
+import Script from "next/script" 
 
 export const metadata: Metadata = {
   title: "代码反编译 | 高级前端工具",
@@ -14,6 +15,37 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col bg-black text-white relative overflow-hidden">
+      <Script
+        id="baidu-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+           var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?70827dd648a25125eccd3f4b43515f8b";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+            })();
+          `,
+        }}
+      />
+
+      {/* Microsoft Clarity 分析脚本 */}
+      <Script
+        id="clarity-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "sgom5itxo0");
+          `,
+        }}
+      />
+
       <ParticleBackground />
 
       <header className="relative z-10 border-b border-zinc-800 py-6 px-8">
