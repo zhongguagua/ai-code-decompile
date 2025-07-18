@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-
+const host = 'https://api.jsunpack.tech'
+// const host = 'http://59.110.60.222:3010'
+// const host = 'http://localhost:3010'
 interface StreamCompletionOptions {
   content: string;
   onMessage: (content: string) => void;
@@ -8,7 +10,7 @@ interface StreamCompletionOptions {
 }
 
 const aiCompletionsStream = (content: any, controllerRef: any) => {
-  const responsePromise = fetch('/api/ai/completions', {
+  const responsePromise = fetch(`${host}/api/ai/completions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

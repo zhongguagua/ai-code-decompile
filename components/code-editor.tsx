@@ -4,6 +4,11 @@ import { Button } from "@/components/ui/button"
 import { Loader2, Play, Copy, Check, Code2, Eye, Brain, Sparkles, ChevronDown, Network } from "lucide-react"
 import { motion } from "framer-motion"
 import CodeVisualizer from "@/components/code-visualizer"
+
+// 在组件挂载前配置
+import { loader } from '@monaco-editor/react';
+(loader as any).config({ monaco: import('monaco-editor') });
+
 import Editor from "@monaco-editor/react"
 import { useAIStream } from "../api/index"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
