@@ -2,9 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { getOrGenerateFingerprint } from '../lib/finger';
 import { getFrom } from '../lib/getFrom';
 
-// const host = 'https://api.jsunpack.tech'
+const host = 'https://api.jsunpack.tech'
 // const host = 'http://59.110.60.222:3010'
-const host = 'http://localhost:3010'
+// const host = 'http://localhost:3010'
 interface StreamCompletionOptions {
   content: string;
   onMessage: (content: string) => void;
