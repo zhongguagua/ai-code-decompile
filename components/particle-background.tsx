@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import { getOrGenerateFingerprint } from '../lib/finger';
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -137,6 +138,10 @@ export default function ParticleBackground() {
       window.removeEventListener("resize", resizeCanvas)
       cancelAnimationFrame(animationFrameId)
     }
+  }, [])
+
+  useEffect(() => {
+    getOrGenerateFingerprint()
   }, [])
 
   return (

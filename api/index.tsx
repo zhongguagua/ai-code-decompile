@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-const host = 'https://api.jsunpack.tech'
+import { getOrGenerateFingerprint } from '../lib/finger';
+import { getFrom } from '../lib/getFrom';
+
+// const host = 'https://api.jsunpack.tech'
 // const host = 'http://59.110.60.222:3010'
-// const host = 'http://localhost:3010'
+const host = 'http://localhost:3010'
 interface StreamCompletionOptions {
   content: string;
   onMessage: (content: string) => void;
@@ -9,13 +12,20 @@ interface StreamCompletionOptions {
   onComplete?: () => void;
 }
 
-const aiCompletionsStream = (content: any, controllerRef: any) => {
+const aiCompletionsStream = async (content: any, controllerRef: any) => {
+  const tmpUid = await getOrGenerateFingerprint();
+  const from = getFrom();
+
   const responsePromise = fetch(`${host}/api/ai/completions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ content }),
+    body: JSON.stringify({ 
+      tmpUid,
+      content,
+      source: from
+    }),
     signal: controllerRef.current.signal,
   }).then((response) => {
     if (!response.ok) {
