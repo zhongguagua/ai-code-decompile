@@ -80,6 +80,26 @@ export default function Home() {
           <div className="mt-2 text-xs text-zinc-400 mb-2">
             <p>免责声明：本工具仅限合法学习研究，禁止用于商业代码反编译，使用者须确保代码合法性并承担全部责任</p>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">鲁ICP备2025173891号-1</a>
+            <p>
+              友情链接:
+              <a href="https://openi.cn/" target="_blank" rel="noopener noreferrer">OpenI AI时代</a>
+              |
+              <a href="https://ai-bot.cn/" target="_blank" rel="noopener noreferrer">AI-bot</a>
+              |
+              <a href="https://toolsdar.cn/" target="_blank" rel="noopener noreferrer">工具达人</a>
+              |
+              <a href="https://aitoolmall.com/" target="_blank" rel="noopener noreferrer">Aitoolmall</a>
+              |
+              <a href="https://www.aigc.cn" target="_blank" rel="noopener noreferrer">Aigc</a>
+              |
+              <a href="https://www.ainavpro.com/" target="_blank" rel="noopener noreferrer">Ainavpro</a>
+              |
+              <a href="https://www.8kmm.com/" target="_blank" rel="noopener noreferrer">8kmm</a>
+              |
+              <a href="https://qssily.com/" target="_blank" rel="noopener noreferrer">Qssily</a>
+              |
+              <a href="https://hifawn.com/" target="_blank" rel="noopener noreferrer">新迷路导航</a>
+            </p>
           </div>
           <p>© {new Date().getFullYear()} 高级前端代码反编译工具 | 从机器语言到人类智慧</p>
         </div>
