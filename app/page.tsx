@@ -79,6 +79,7 @@ export default function Home() {
         <div className="container mx-auto">
           <div className="mt-2 text-xs text-zinc-400 mb-2">
             <p>免责声明：本工具仅限合法学习研究，禁止用于商业代码反编译，使用者须确保代码合法性并承担全部责任</p>
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">鲁ICP备2025173891号-1</a>
           </div>
           <p>© {new Date().getFullYear()} 高级前端代码反编译工具 | 从机器语言到人类智慧</p>
         </div>
