@@ -71,7 +71,7 @@ export default function CodeEditor() {
     let accumulatedOutput = ""
 
     streamCompletion({
-      content: code,
+      content: code.trim(),
       onMessage: (content) => {
         // 收到第一次输出时关闭思考弹框
         if (!hasReceivedFirstOutput) {
