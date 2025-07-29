@@ -1,7 +1,9 @@
-# 使用AI进行前端代码反编译
+# JavaScript 反编译工具
+
+使用AI反编译JavaScript代码
 
 ## 项目简介
-JSUnpack 是一个基于 AI 的前端代码反编译工具，通过将代码转换为抽象语法树（AST），结合 AI 的深度理解能力，解决第三方库识别、变量名混淆等难题。无需手动处理 AST 或配置 AI Agent，只需粘贴代码即可获得智能分析结果。
+是一个基于 AI 的js代码反编译工具，通过将代码转换为抽象语法树（AST），结合 AI 的深度理解能力，解决第三方库识别、变量名混淆等难题。无需手动处理 AST 或配置 AI Agent，只需粘贴代码即可获得智能分析结果。
 
 在线体验：[https://www.jsunpack.tech/](https://www.jsunpack.tech/)
 
@@ -62,7 +64,7 @@ JSUnpack 是一个基于 AI 的前端代码反编译工具，通过将代码转�
 - npm run build
 
 
-# Using AI for Frontend Code Decompilation
+# JavaScript Unpack
 
 ## Project Introduction  
 JSUnpack is an AI-powered frontend code decompilation tool. By converting code into an Abstract Syntax Tree (AST) and leveraging AI's deep comprehension capabilities, it solves challenges like third-party library identification and variable name obfuscation. No manual AST handling or AI Agent configuration is required – simply paste your code to receive intelligent analysis results.
