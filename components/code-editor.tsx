@@ -33,15 +33,13 @@ export default function CodeEditor() {
   const { streamCompletion } = useAIStream()
   const { toast } = useToast()
 
-  const MAX_CHARACTERS = 5000
+  const MAX_CHARACTERS = 10000
 
   const handleCodeChange = (value: string | undefined) => {
     const newCode = value || ""
-    if (newCode.length <= MAX_CHARACTERS) {
-      setCode(newCode)
-      // 自动检测语言类型
-      detectLanguage(newCode)
-    }
+    setCode(newCode)
+    // 自动检测语言类型
+    detectLanguage(newCode)
   }
 
   const detectLanguage = (code: string) => {
