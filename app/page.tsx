@@ -8,8 +8,8 @@ import DemoSection from "@/components/demo-section"
 import Script from "next/script" 
 
 export const metadata: Metadata = {
-  title: "代码反编译 | 高级前端工具",
-  description: "一个炫酷的前端代码片段反编译工具，通过AI智能分析压缩混淆后的JS代码",
+  title: "JS反编译工具 - 专业JS反混淆与混淆还原 | 前端逆向分析",
+  description: "一款强大的JS反编译与JS反混淆工具，专为前端开发者设计的混淆代码还原解决方案。通过AI智能解析技术，快速实现JS逆向工程，精准还原被压缩/混淆的JavaScript代码结构。支持主流JS混淆算法逆向分析，提升调试和代码审计效率。",
 }
 
 export default function Home() {
