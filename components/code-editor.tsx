@@ -33,7 +33,7 @@ export default function CodeEditor() {
   const { streamCompletion } = useAIStream()
   const { toast } = useToast()
 
-  const MAX_CHARACTERS = 10000
+  const MAX_CHARACTERS = 8000
 
   const handleCodeChange = (value: string | undefined) => {
     const newCode = value || ""
@@ -58,6 +58,24 @@ export default function CodeEditor() {
 
   const handleDecompile = async () => {
     if (!code.trim()) return
+    if (code.length > MAX_CHARACTERS) {
+      toast({
+        variant: "destructive",
+        title: "❌ 代码过长",
+        description: `请输入不超过 ${MAX_CHARACTERS} 个字符的代码。`,
+        duration: 6000,
+      })
+      return
+    }
+    if (code.length < 10) {
+      toast({
+        variant: "destructive",
+        title: "❌ 代码太短",
+        description: "请输入至少 10 个字符的代码。",
+        duration: 6000,
+      })
+      return
+    }
 
     setIsProcessing(true)
     setShowThinkingDialog(true)
