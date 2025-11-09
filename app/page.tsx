@@ -86,6 +86,8 @@ export default function Home() {
               |
               <a href="https://ai-bot.cn/" target="_blank" rel="noopener noreferrer">AI-bot</a>
               |
+              <a href="https://ai-kit.cn" target="_blank" rel="noopener noreferrer">AI工具箱</a>
+              |
               <a href="https://toolsdar.cn/" target="_blank" rel="noopener noreferrer">工具达人</a>
               |
               <a href="https://aitoolmall.com/" target="_blank" rel="noopener noreferrer">Aitoolmall</a>
