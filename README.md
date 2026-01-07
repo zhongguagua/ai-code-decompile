@@ -1,122 +1,94 @@
-# JavaScript 反编译工具
+**[English](README.en.md)** | **中文**
 
-使用AI反编译JavaScript代码
+---
 
-## 项目简介
-是一个基于 AI 的js代码反编译工具，通过将代码转换为抽象语法树（AST），结合 AI 的深度理解能力，解决第三方库识别、变量名混淆等难题。无需手动处理 AST 或配置 AI Agent，只需粘贴代码即可获得智能分析结果。
+# JSUnpack – 让不可读的前端产物，变成可以理解的代码
 
-在线体验：[https://www.jsunpack.tech/](https://www.jsunpack.tech/)
+**JSUnpack** 是一个基于 AI 的 JavaScript 反编译与分析工具，
+用于分析 **已经打包、压缩、混淆后的前端代码**，帮助开发者理解「这个网站到底是怎么实现的」。
 
+👉 在线体验：https://www.jsunpack.tech/
 
-## ✨ 核心功能
-### 🧠 AI 智能代码分析
-利用 AI 理解代码逻辑与上下文
+---
 
-自动识别代码模式与结构
+## 🤔 你什么时候会需要 JSUnpack？
 
-智能推测变量用途与功能
+如果你正在做下面这些事情，这个工具就是为你准备的：
 
-### 🔍 高级反编译能力
-源码转换：自动将代码转换为 AST 进行分析
+- 想研究 **某个网站的交互、动画或整体实现方案**
+- 只有浏览器里加载的 JS 文件，**没有源码、没有构建配置**
+- 面对 Webpack / Vite / Rollup 打包后的代码，变量名被严重混淆
+- 想分析 **xx.js / React / Vue 等复杂前端产物** 的实现逻辑
+- 现有工具只能格式化代码，但 **依然很难读懂**
 
-混淆还原：智能识别并还原混淆的变量名
+JSUnpack 的目标是 **让人真正能看懂前端产物在做什么**。
 
-依赖识别：准确检测第三方库的使用情况
+---
 
-### ⚡ 一键式操作
-无需复杂配置
+## ✨ JSUnpack 能做什么？
 
-粘贴代码即得分析结果
+### 🧠 AI 驱动的代码理解
+- 基于上下文分析代码逻辑，而不是简单字符串替换
+- 识别关键流程、核心函数与模块结构
+- 辅助理解复杂控制流与业务逻辑
 
-快速理解复杂代码结构
+### 🔍 混淆还原与依赖识别
+- 智能推测变量与函数的实际用途
+- 自动识别常见第三方库与框架代码
+- 减少无关代码干扰，聚焦真正有价值的实现部分
 
+### 🧩 面向真实工程场景
+- 适用于多入口、多 chunk 的真实构建产物
+- 支持高度压缩、混合框架、业务与库代码交织的场景
+- 不是 Demo 级工具，而是为真实项目设计
 
-## 🚀 快速开始
-[使用说明](https://juejin.cn/post/7530645512678211634)
+---
 
-## 功能介绍
-### 源码转换
-将源码转换为AST，方便进行分析。
-### 代码分析
-利用AI对AST进行分析，理解代码逻辑。
-### 变量名混淆
-识别变量名混淆，还原变量名。
-### 第三方库识别
-识别并分析第三方库的使用。
+## 🚀 立即在线体验
 
-## 仓库介绍
-本项目为开源了前端项目
+无需安装、无需配置：
+
+👉 https://www.jsunpack.tech/  
+**粘贴混淆后的 JS → 一键分析 → 获得可理解的结果**
+
+---
+
+## 🎯 使用场景示例
+
+- 技术选型前，分析竞品或参考站点的实现方式  
+- 学习复杂交互、动画、WebGL 或工程架构设计  
+- 排查线上问题、理解历史遗留前端产物  
+- 安全研究、架构分析、技术调研（合法合规场景）
+
+---
+
+## ⚠️ 技术边界与使用原则
+
+- JSUnpack **不以 100% 还原原始源码为目标**
+- 多轮打包与混淆后，部分语义信息本身不可逆
+- 本工具仅用于 **学习、分析、研究与问题定位**
+- 不提供任何破解、绕过授权或商业保护的能力
+
+---
+
+## 我们的故事
+👉 https://www.jsunpack.tech/blog/our-story-and-vision/
+
+## 📦 本仓库是什么？
+
+本仓库为 **JSUnpack 的前端开源实现**，  
+用于界面展示与交互，只有UI和交互逻辑。
 
 ### 技术栈
 - React
+- Next.js
 - TypeScript
-- tailwindcss
+- Tailwind CSS
 - @radix-ui
-- Nextjs
 
-### UI原型编写
-- Vercel
-- V0
+### 本地运行
+```bash
+node >= 18
 
-### 运行
-- node >= 18
-- npm run dev
-- npm run build
-
-
-# JavaScript Unpack
-
-## Project Introduction  
-JSUnpack is an AI-powered frontend code decompilation tool. By converting code into an Abstract Syntax Tree (AST) and leveraging AI's deep comprehension capabilities, it solves challenges like third-party library identification and variable name obfuscation. No manual AST handling or AI Agent configuration is required – simply paste your code to receive intelligent analysis results.
-
-**Live Demo**: [https://www.jsunpack.tech/](https://www.jsunpack.tech/)
-
-## ✨ Core Features  
-### 🧠 AI-Powered Code Analysis  
-- Leverages AI to understand code logic and context  
-- Automatically identifies code patterns and structures  
-- Intelligently deduces variable purposes and functionalities  
-
-### 🔍 Advanced Decompilation Capabilities  
-- **Source Conversion**: Automatically transforms code into AST for analysis  
-- **Deobfuscation**: Intelligently recognizes and restores obfuscated variable names  
-- **Dependency Identification**: Accurately detects third-party library usage  
-
-### ⚡ One-Click Operation  
-- No complex configuration needed  
-- Paste code → Get analysis results instantly  
-- Rapidly understand complex code structures  
-
-## 🚀 Getting Started  
-[Usage Guide](https://juejin.cn/post/7530645512678211634)  
-
-## Feature Overview  
-### Source Code Conversion  
-Converts source code into AST for streamlined analysis.  
-### Code Analysis  
-Utilizes AI to analyze AST and comprehend code logic.  
-### Variable Name Deobfuscation  
-Identifies obfuscated variables and restores original names.  
-### Third-Party Library Detection  
-Recognizes and analyzes usage of third-party libraries.  
-
-## Repository Introduction  
-This project is an open-source frontend implementation.  
-
-### Tech Stack  
-- React  
-- TypeScript  
-- Tailwind CSS  
-- @radix-ui  
-- Next.js  
-
-### UI Prototyping  
-- Vercel  
-- V0  
-
-### Development  
-- **Requirement**: Node.js ≥ v18  
-- **Commands**:  
-  ```bash
-  npm run dev    # Start development server
-  npm run build  # Create production build
+npm install
+npm run dev
